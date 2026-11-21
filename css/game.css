@@ -1,0 +1,1498 @@
+/* ==========================================================
+   Orbit Arena - game.css
+   Menu, pemilihan mode, layar game, hasil, statistik, pengaturan
+   ========================================================== */
+
+.app {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-block: 16px 32px;
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.screen-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.screen-title {
+  font-size: 1.75rem;
+}
+
+/* ---------- Topbar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.player-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 50%;
+  padding: 6px 14px 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.player-chip span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-avatar {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--player-light), var(--player) 55%, var(--player-deep));
+}
+
+/* ---------- Menu utama (lobi) ---------- */
+
+.screen-menu {
+  min-height: calc(100svh - 48px);
+  gap: 0;
+}
+
+.topbar-end {
+  justify-content: flex-end;
+}
+
+.player-menu {
+  position: relative;
+  min-width: 0;
+}
+
+.player-chip {
+  max-width: 220px;
+  cursor: pointer;
+}
+
+.player-chip:hover {
+  border-color: var(--player);
+}
+
+.player-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 240px;
+  padding: 12px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.pop-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  text-align: center;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.pop-stats b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--text);
+}
+
+.lobby {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 340px;
+  padding-block: 16px 32px;
+}
+
+.lobby-title {
+  font-size: clamp(2.75rem, 7vw, 4.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.lobby-title span {
+  display: block;
+}
+
+.lobby-title .ch {
+  display: inline-block;
+  font-style: normal;
+  cursor: default;
+  animation:
+    letter-in 0.6s cubic-bezier(0.3, 1.5, 0.5, 1) both,
+    letter-wave 7s ease-in-out infinite;
+  animation-delay:
+    calc(var(--i) * 55ms),
+    calc(var(--i) * 90ms + 2.4s);
+}
+
+.lobby-title .ch.is-jump {
+  animation: letter-jump 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(-12deg) scale(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes letter-wave {
+  0%,
+  12%,
+  100% {
+    transform: none;
+  }
+
+  5% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes letter-jump {
+  0% {
+    transform: none;
+  }
+
+  40% {
+    transform: translateY(-22px) rotate(-8deg) scale(1.2);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+/* Tiap huruf judul punya warna sendiri (lima warna bergantian, kata kedua digeser) */
+
+.lobby-title .ch:nth-child(5n + 1) {
+  color: var(--player-deep);
+}
+
+.lobby-title .ch:nth-child(5n + 2) {
+  color: var(--blue);
+}
+
+.lobby-title .ch:nth-child(5n + 3) {
+  color: var(--violet);
+}
+
+.lobby-title .ch:nth-child(5n + 4) {
+  color: var(--pink);
+}
+
+.lobby-title .ch:nth-child(5n) {
+  color: var(--amber);
+}
+
+.lobby-title span:last-child .ch:nth-child(5n + 1) {
+  color: var(--pink);
+}
+
+.lobby-title span:last-child .ch:nth-child(5n + 2) {
+  color: var(--amber);
+}
+
+.lobby-title span:last-child .ch:nth-child(5n + 3) {
+  color: var(--player-deep);
+}
+
+.lobby-title span:last-child .ch:nth-child(5n + 4) {
+  color: var(--blue);
+}
+
+.lobby-title span:last-child .ch:nth-child(5n) {
+  color: var(--violet);
+}
+
+.lobby-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lobby-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 18px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 4px 4px 0 var(--shadow);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+}
+
+/* Tombol masuk satu per satu, lalu berkilau saat disorot */
+
+.screen-menu:not([hidden]) .lobby-btn {
+  animation: lobby-in 0.5s cubic-bezier(0.2, 1.2, 0.4, 1) both;
+}
+
+.lobby-btn:nth-child(1) {
+  animation-delay: 0.35s;
+}
+
+.lobby-btn:nth-child(2) {
+  animation-delay: 0.45s;
+}
+
+.lobby-btn:nth-child(3) {
+  animation-delay: 0.55s;
+}
+
+.lobby-btn:nth-child(4) {
+  animation-delay: 0.65s;
+}
+
+@keyframes lobby-in {
+  from {
+    opacity: 0;
+    transform: translateX(-46px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lobby-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.lobby-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  pointer-events: none;
+  transform: translateX(-130%) skewX(-18deg);
+}
+
+.lobby-btn:hover::after,
+.lobby-btn:focus-visible::after {
+  transform: translateX(330%) skewX(-18deg);
+  transition: transform 0.6s ease;
+}
+
+.lobby-btn.is-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-radius: 6px;
+  pointer-events: none;
+  animation: primary-pulse 2.4s ease-out 1.4s infinite;
+}
+
+@keyframes primary-pulse {
+  0% {
+    opacity: 0.55;
+  }
+
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.lobby-btn:hover,
+.lobby-btn:focus-visible {
+  border-color: var(--player);
+  box-shadow: 6px 6px 0 var(--shadow);
+  transform: translate(-2px, -2px);
+}
+
+.lobby-btn:active {
+  box-shadow: 1px 1px 0 var(--shadow);
+  transform: translate(3px, 3px);
+}
+
+.lobby-btn.is-primary {
+  min-height: 68px;
+  border-color: var(--player);
+  background: var(--player);
+  font-size: 1.625rem;
+  color: #06121a;
+}
+
+.lobby-arrow {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+}
+
+.lobby-btn:hover .lobby-arrow,
+.lobby-btn:focus-visible .lobby-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* HP: arena ada di bawah, menu di atas */
+
+@media (max-aspect-ratio: 1/1) {
+  .lobby {
+    justify-content: flex-start;
+    gap: 20px;
+    max-width: none;
+  }
+
+  .lobby-menu {
+    gap: 10px;
+  }
+
+  .lobby-btn {
+    min-height: 52px;
+  }
+
+  .lobby-btn.is-primary {
+    min-height: 60px;
+  }
+}
+
+/* Deretan bola yang bisa keluar saat pengacakan */
+
+.orb-pool {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pool-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.pool-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ---------- Pilih mode ---------- */
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.mode-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.mode-card.is-selected {
+  border-color: var(--player);
+  box-shadow: 0 0 0 1px var(--player);
+}
+
+.mode-card.is-disabled {
+  opacity: 0.55;
+}
+
+.mode-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.mode-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mode-card.is-selected .mode-tag {
+  background: var(--player);
+  color: #06121a;
+}
+
+/* ---------- Memuat ---------- */
+
+.screen-loading {
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - 48px);
+}
+
+.loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: min(100%, 360px);
+  text-align: center;
+}
+
+/* Dua orb saling mengorbit */
+
+.loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border: 2px dashed var(--line);
+  border-radius: 50%;
+  animation: loader-spin 1.4s linear infinite;
+}
+
+.loader-orb {
+  position: absolute;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  border-radius: 50%;
+}
+
+.loader-player {
+  top: -14px;
+  background: radial-gradient(circle at 35% 30%, var(--player-light), var(--player) 55%, var(--player-deep));
+}
+
+.loader-enemy {
+  bottom: -14px;
+  background: radial-gradient(circle at 35% 30%, var(--enemy-light), var(--enemy) 55%, var(--enemy-deep));
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-title {
+  font-size: 1.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.loading-bar {
+  width: 100%;
+  height: 14px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.loading-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--player);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.loading-step {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.orb-preview {
+  display: block;
+  width: 64px;
+  height: 64px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.panel-title {
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.seg-btn {
+  flex: 1 1 96px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.seg-btn:hover {
+  background: var(--surface-2);
+}
+
+.seg-btn[aria-pressed='true'] {
+  border-color: var(--player);
+  background: rgba(16, 185, 166, 0.14);
+  color: var(--player-deep);
+}
+
+/* ---------- Layar game ---------- */
+
+.screen-game {
+  --reserve: 190px;
+
+  position: relative;
+  align-items: center;
+  gap: 12px;
+}
+
+.screen-game.has-touch {
+  --reserve: 400px;
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 12px;
+  width: min(100%, max(320px, calc((100vh - var(--reserve)) * 1.5)));
+  width: min(100%, max(320px, calc((100svh - var(--reserve)) * 1.5)));
+}
+
+.hud-side {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hud-name {
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hud-enemy {
+  text-align: right;
+}
+
+.hud-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-timer {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-timer.is-low {
+  color: var(--danger-deep);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--surface-2);
+}
+
+.icon-btn svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.hp-bar {
+  position: relative;
+  display: flex;
+  height: 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+}
+
+.hud-enemy .hp-bar {
+  justify-content: flex-end;
+}
+
+.hp-fill {
+  height: 100%;
+  width: 100%;
+  transition: width 0.15s ease-out;
+}
+
+.hp-fill-player {
+  background: linear-gradient(90deg, var(--player-deep), var(--player));
+}
+
+.hp-fill-enemy {
+  background: linear-gradient(270deg, var(--enemy-deep), var(--enemy));
+}
+
+.hp-text {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(20, 24, 56, 0.6);
+}
+
+.hud-enemy .hp-text {
+  right: 12px;
+  left: auto;
+}
+
+.arena-wrap {
+  position: relative;
+  width: min(100%, max(320px, calc((100vh - var(--reserve)) * 1.5)));
+  width: min(100%, max(320px, calc((100svh - var(--reserve)) * 1.5)));
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: 0 18px 50px rgba(16, 37, 42, 0.22);
+}
+
+.arena-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pause-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.pause-title {
+  margin-bottom: 8px;
+  font-size: 2rem;
+}
+
+.hud-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 16px;
+  width: min(100%, max(320px, calc((100vh - var(--reserve)) * 1.5)));
+  width: min(100%, max(320px, calc((100svh - var(--reserve)) * 1.5)));
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.chip-skill {
+  background: linear-gradient(90deg, rgba(245, 179, 1, 0.28) calc(var(--ready, 1) * 100%), var(--surface) 0);
+}
+
+.chip-skill.is-ready {
+  border-color: var(--gold);
+  color: var(--gold-deep);
+}
+
+.chip-lock.is-on {
+  border-color: var(--gold);
+  color: var(--gold-deep);
+}
+
+.controls-hint {
+  width: 100%;
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ---------- Kontrol sentuh ---------- */
+
+.touch-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  max-width: 560px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.joystick {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 136px;
+  height: 136px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--surface-2), var(--surface));
+  touch-action: none;
+}
+
+.joystick-knob {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--player-light), var(--player) 60%, var(--player-deep));
+  box-shadow: 0 0 18px rgba(16, 185, 166, 0.4);
+  pointer-events: none;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.action-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-attack {
+  width: 92px;
+  height: 92px;
+  border: 0;
+  background: conic-gradient(var(--player) calc(var(--ready, 1) * 1turn), var(--line) 0);
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.action-attack::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: #e3fbf7;
+}
+
+.action-attack span {
+  position: relative;
+  z-index: 1;
+}
+
+.action-attack.is-ready {
+  color: var(--player-deep);
+}
+
+.action-lock {
+  width: 60px;
+  height: 60px;
+}
+
+.action-lock.is-on {
+  border-color: var(--gold);
+  background: rgba(245, 179, 1, 0.16);
+  color: var(--gold-deep);
+}
+
+/* Ponsel sempit: kontrol dikecilkan supaya semua tombol muat */
+
+@media (max-width: 420px) {
+  .touch-controls {
+    gap: 8px;
+  }
+
+  .joystick {
+    width: 112px;
+    height: 112px;
+  }
+
+  .joystick-knob {
+    width: 48px;
+    height: 48px;
+  }
+
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .action-attack {
+    width: 80px;
+    height: 80px;
+  }
+
+  .action-lock {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+/* HP dan kontrol saat ponsel landscape: kontrol di sisi arena */
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .screen-game.has-touch {
+    --reserve: 120px;
+  }
+
+  .has-touch .touch-controls {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: none;
+    padding-inline: 4px;
+    pointer-events: none;
+  }
+
+  .has-touch .joystick,
+  .has-touch .action-buttons {
+    pointer-events: auto;
+  }
+
+  .has-touch .joystick {
+    width: 116px;
+    height: 116px;
+  }
+}
+
+/* ---------- Hasil pertandingan ---------- */
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: min(100%, 560px);
+  margin: 0 auto;
+  padding: 28px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  text-align: center;
+}
+
+.result-title {
+  font-size: clamp(2.75rem, 12vw, 4.25rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.result-title.is-win {
+  color: var(--player-deep);
+}
+
+.result-title.is-loss {
+  color: var(--enemy-deep);
+}
+
+.result-title.is-draw {
+  color: var(--gold-deep);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.result-grid .stat {
+  background: var(--paper);
+  text-align: left;
+}
+
+.result-grid dd,
+.result-grid dt {
+  margin: 0;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button-row .btn {
+  flex: 1 1 160px;
+}
+
+/* ---------- Statistik ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.history-table {
+  width: 100%;
+  min-width: 420px;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.history-table th {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.history-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.badge-win {
+  background: rgba(16, 185, 166, 0.16);
+  color: var(--player-deep);
+}
+
+.badge-loss {
+  background: rgba(242, 69, 122, 0.16);
+  color: var(--enemy-deep);
+}
+
+.badge-draw {
+  background: rgba(245, 179, 1, 0.16);
+  color: var(--gold-deep);
+}
+
+.empty-state {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ---------- Pengaturan ---------- */
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.setting-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.setting-name {
+  font-weight: 600;
+}
+
+.switch {
+  position: relative;
+  flex: none;
+  width: 60px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.switch[aria-checked='true'] {
+  border-color: var(--player);
+  background: rgba(16, 185, 166, 0.18);
+}
+
+.switch[aria-checked='true']::after {
+  transform: translateX(26px);
+  background: var(--player);
+}
+
+.danger-zone {
+  border-color: rgba(229, 56, 79, 0.45);
+}
+
+.confirm-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.confirm-row p {
+  flex: 1 1 100%;
+  font-size: 0.9375rem;
+  color: #c5223b;
+}
+
+.status-line {
+  min-height: 1.5em;
+  font-size: 0.875rem;
+  color: var(--success-deep);
+}
+
+/* ---------- Layar lebar ---------- */
+
+@media (min-width: 860px) {
+  .mode-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .result-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Animasi muncul bergantian ---------- */
+
+.fx-play .reveal {
+  animation: reveal-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms + 80ms);
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Hasil pertandingan: interaksi ---------- */
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.result-title.is-slam {
+  animation: title-slam 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) backwards;
+}
+
+@keyframes title-slam {
+  0% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(0.94);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.star {
+  width: 40px;
+  height: 40px;
+  background: var(--line);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  transition: background-color 0.2s ease;
+}
+
+.star.is-lit {
+  background: var(--gold);
+  animation: star-pop 0.45s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+@keyframes star-pop {
+  0% {
+    transform: scale(0.2) rotate(-40deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.versus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.versus-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.versus-side .orb-preview {
+  width: 72px;
+  height: 72px;
+  transition: transform 0.2s ease;
+}
+
+.versus-side:hover .orb-preview {
+  transform: scale(1.18) rotate(-6deg);
+}
+
+.versus-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.versus-tag {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.versus-tag-player {
+  color: var(--player-deep);
+}
+
+.versus-tag-enemy {
+  color: var(--enemy-deep);
+}
+
+.versus-vs {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold-deep);
+}
+
+.result-grid .stat,
+.stat-grid .stat {
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.result-grid .stat:hover,
+.stat-grid .stat:hover {
+  border-color: var(--player);
+  transform: translateY(-3px);
+}
+
+.stat-meter {
+  display: block;
+  height: 6px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--line);
+}
+
+.stat-meter-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--player);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-pulse {
+  animation: btn-pulse 1.8s ease-in-out 1.6s infinite;
+}
+
+@keyframes btn-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 166, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 166, 0);
+  }
+}
+
+/* ---------- Statistik: interaksi ---------- */
+
+.stat-rate {
+  position: relative;
+}
+
+.ring {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 46px;
+  height: 46px;
+  margin-top: -23px;
+  border-radius: 50%;
+  background: conic-gradient(var(--player) calc(var(--p, 0) * 1%), var(--line) 0);
+  -webkit-mask: radial-gradient(circle, transparent 56%, #000 58%);
+  mask: radial-gradient(circle, transparent 56%, #000 58%);
+}
+
+.history-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.form-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #06121a;
+  cursor: default;
+  transition: transform 0.15s ease;
+}
+
+.form-dot:hover {
+  transform: scale(1.3);
+}
+
+.form-dot.is-win {
+  background: var(--player);
+}
+
+.form-dot.is-loss {
+  background: var(--enemy);
+}
+
+.form-dot.is-draw {
+  background: var(--gold);
+}
+
+.fx-play .form-dot {
+  animation: dot-in 0.3s cubic-bezier(0.2, 1.6, 0.4, 1) backwards;
+  animation-delay: calc(var(--d, 0) * 50ms + 450ms);
+}
+
+@keyframes dot-in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.history-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.history-table tbody tr:hover {
+  background: rgba(16, 185, 166, 0.07);
+}

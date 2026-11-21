@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Orbit Arena</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/icons/orbit.svg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/picker.css">
+  <link rel="stylesheet" href="css/campaign.css">
+  <link rel="stylesheet" href="css/ornament.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/defeat.css">
+  <link rel="stylesheet" href="css/victory.css">
+</head>
+<body>
+  <div class="app" data-page="home">
+
+    <p class="notice" id="storage-notice" role="status" hidden>
+      Penyimpanan browser tidak tersedia. Akun dan progres hanya bertahan sampai halaman ditutup.
+    </p>
+
+    <!-- ===== Main Menu (lobi) ===== -->
+    <section class="screen screen-menu" data-screen="menu">
+      <header class="topbar topbar-end">
+        <div class="player-menu">
+          <button class="player-chip" type="button" data-action="toggle-player" aria-expanded="false" aria-controls="player-pop">
+            <span class="player-avatar" aria-hidden="true"></span>
+            <span id="player-name">Pemain</span>
+          </button>
+
+          <div class="player-pop" id="player-pop" hidden>
+            <p class="pop-stats">
+              <span><b id="sum-matches">0</b>main</span>
+              <span><b id="sum-wins">0</b>menang</span>
+              <span><b id="sum-losses">0</b>kalah</span>
+              <span><b id="sum-rate">0%</b>winrate</span>
+            </p>
+            <button class="btn btn-ghost btn-block" type="button" data-action="logout">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="lobby">
+        <h1 class="lobby-title" tabindex="-1" data-focus><span>Orbit</span> <span>Arena</span></h1>
+
+        <nav class="lobby-menu" aria-label="Menu utama">
+          <button class="lobby-btn is-primary" type="button" data-action="play" data-pose="laser">Main <span class="lobby-arrow" aria-hidden="true">&rarr;</span></button>
+          <button class="lobby-btn" type="button" data-goto="campaign" data-pose="bounce">Campaign <span class="lobby-arrow" aria-hidden="true">&rarr;</span></button>
+          <button class="lobby-btn" type="button" data-goto="mode" data-pose="bomb">Mode <span class="lobby-arrow" aria-hidden="true">&rarr;</span></button>
+          <button class="lobby-btn" type="button" data-goto="stats" data-pose="burst">Statistik <span class="lobby-arrow" aria-hidden="true">&rarr;</span></button>
+          <button class="lobby-btn" type="button" data-goto="settings" data-pose="bounce">Atur <span class="lobby-arrow" aria-hidden="true">&rarr;</span></button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ===== Campaign: peta stage ===== -->
+    <section class="screen screen-campaign" data-screen="campaign" hidden>
+      <header class="screen-head">
+        <button class="btn btn-ghost" type="button" data-goto="menu">&larr; Kembali</button>
+        <h2 class="screen-title" tabindex="-1" data-focus>Campaign</h2>
+      </header>
+
+      <p class="hint camp-summary" id="camp-summary"></p>
+
+      <p class="camp-group-title">Tingkat 1 <span>Satu lawan satu</span></p>
+      <ol class="camp-path" id="camp-path-1"></ol>
+
+      <p class="camp-group-title camp-group-special">Tingkat 2 <span>Bos dijaga 2 pengawal</span></p>
+      <ol class="camp-path" id="camp-path-2"></ol>
+    </section>
+
+    <!-- ===== Campaign: cerita dan pilih bola ===== -->
+    <section class="screen screen-story" data-screen="story" hidden>
+      <header class="screen-head">
+        <button class="btn btn-ghost" type="button" data-goto="campaign">&larr; Peta</button>
+        <h2 class="screen-title" id="story-title" tabindex="-1" data-focus>Stage</h2>
+      </header>
+
+      <div class="story-card panel">
+        <canvas class="story-arena" id="story-arena" width="480" height="320" aria-hidden="true"></canvas>
+
+        <div class="story-body">
+          <p class="eyebrow" id="story-stage"></p>
+
+          <div class="story-dialog" id="story-dialog">
+            <strong class="story-who" id="story-who"></strong>
+            <p class="story-text" id="story-text" aria-live="polite"></p>
+          </div>
+
+          <div class="story-reward" id="story-reward" hidden>
+            <canvas class="orb-preview" id="story-reward-orb" data-kind="laser" data-team="player" aria-hidden="true"></canvas>
+            <div>
+              <p class="eyebrow">Bola terbuka</p>
+              <strong class="story-reward-name" id="story-reward-name"></strong>
+              <p class="hint" id="story-reward-hint"></p>
+            </div>
+          </div>
+
+          <div class="story-loadout" id="story-loadout" hidden>
+            <p class="pick-group-title">Pilih bola kamu <span id="story-hp"></span></p>
+            <div class="camp-orbs" id="story-orbs" role="radiogroup" aria-label="Bola yang sudah terbuka"></div>
+            <p class="hint" id="story-info"></p>
+          </div>
+
+          <div class="button-row">
+            <button class="btn btn-primary" type="button" id="story-next" data-action="story-next">Lanjut</button>
+            <button class="btn btn-primary btn-pulse" type="button" id="story-start" data-action="camp-start" hidden>Mulai Pertarungan</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Pilih Mode ===== -->
+    <section class="screen" data-screen="mode" hidden>
+      <header class="screen-head">
+        <button class="btn btn-ghost" type="button" data-goto="menu">&larr; Kembali</button>
+        <h2 class="screen-title" tabindex="-1" data-focus>Pilih Mode</h2>
+      </header>
+
+      <div class="mode-grid">
+        <div class="mode-card is-selected">
+          <span class="mode-name">Latihan vs Bot <span class="mode-tag">Dipilih</span></span>
+          <span class="hint">Satu lawan satu melawan bot di arena. Tidak perlu pemain kedua.</span>
+        </div>
+
+        <div class="mode-card is-disabled" aria-disabled="true">
+          <span class="mode-name">Dua Pemain Lokal <span class="mode-tag">Segera hadir</span></span>
+          <span class="hint">Dua pemain di satu perangkat. Belum aktif di versi ini.</span>
+        </div>
+      </div>
+
+      <fieldset class="panel">
+        <legend class="panel-title">Bola pertandingan</legend>
+        <p class="hint">Kamu yang memilih bola untuk dirimu dan untuk bot di layar berikutnya, atau tekan Acak Bola. Ada 4 bola biasa (HP 100) dan 3 bola spesial (HP 200).</p>
+        <div class="orb-pool" data-orb-pool aria-label="Semua bola yang bisa dipilih"></div>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend class="panel-title">Tingkat kesulitan bot</legend>
+        <div class="segmented">
+          <button class="seg-btn" type="button" data-action="set-difficulty" data-value="easy" aria-pressed="false">Mudah</button>
+          <button class="seg-btn" type="button" data-action="set-difficulty" data-value="normal" aria-pressed="true">Normal</button>
+          <button class="seg-btn" type="button" data-action="set-difficulty" data-value="hard" aria-pressed="false">Sulit</button>
+        </div>
+        <p class="hint" id="difficulty-hint"></p>
+      </fieldset>
+
+      <button class="btn btn-primary btn-lg" type="button" data-action="start-match">Mulai Pertandingan</button>
+    </section>
+
+    <!-- ===== Pilih Bola ===== -->
+    <section class="screen screen-pick" id="screen-pick" data-screen="pick" hidden>
+      <div class="pick-stage">
+        <header class="screen-head pick-top">
+          <button class="btn btn-ghost" type="button" data-goto="mode">&larr; Kembali</button>
+          <div class="pick-heading">
+            <p class="eyebrow">Sebelum bertanding</p>
+            <h2 class="pick-title" id="pick-title" tabindex="-1" data-focus>Pilih bola</h2>
+          </div>
+        </header>
+
+        <div class="pick-boxes">
+          <div class="pick-box pick-box-player" id="pick-player">
+            <div class="pick-head">
+              <span class="pick-label">Kamu</span>
+              <span class="pick-state">Belum dipilih</span>
+              <button class="btn btn-secondary btn-sm" type="button" data-pick-random="player">Acak Bola</button>
+            </div>
+
+            <p class="pick-group-title">Bola Biasa <span>HP 100</span></p>
+            <div class="pick-cells" data-cells="normal" role="radiogroup" aria-label="Bola biasa kamu"></div>
+
+            <div class="pick-special">
+              <p class="pick-group-title pick-group-special">Bola Spesial <span>HP 200</span></p>
+              <div class="pick-cells pick-cells-special" data-cells="special" role="radiogroup" aria-label="Bola spesial kamu"></div>
+            </div>
+
+            <div class="pick-info" aria-live="polite">
+              <strong class="pick-name"></strong>
+              <span class="pick-stats"></span>
+              <span class="pick-desc"></span>
+            </div>
+          </div>
+
+          <span class="pick-vs" aria-hidden="true">VS</span>
+
+          <div class="pick-box pick-box-enemy" id="pick-enemy">
+            <div class="pick-head">
+              <span class="pick-label">Bot</span>
+              <span class="pick-state">Belum dipilih</span>
+              <button class="btn btn-secondary btn-sm" type="button" data-pick-random="enemy">Acak Bola</button>
+            </div>
+
+            <p class="pick-group-title">Bola Biasa <span>HP 100</span></p>
+            <div class="pick-cells" data-cells="normal" role="radiogroup" aria-label="Bola biasa bot"></div>
+
+            <div class="pick-special">
+              <p class="pick-group-title pick-group-special">Bola Spesial <span>HP 200</span></p>
+              <div class="pick-cells pick-cells-special" data-cells="special" role="radiogroup" aria-label="Bola spesial bot"></div>
+            </div>
+
+            <div class="pick-info" aria-live="polite">
+              <strong class="pick-name"></strong>
+              <span class="pick-stats"></span>
+              <span class="pick-desc"></span>
+            </div>
+          </div>
+        </div>
+
+        <p class="hint pick-note" id="pick-note"></p>
+        <button class="btn btn-primary btn-lg" id="pick-start" type="button" disabled>Mulai Pertandingan</button>
+      </div>
+    </section>
+
+    <!-- ===== Memuat ===== -->
+    <section class="screen screen-loading" data-screen="loading" hidden>
+      <div class="loading-box">
+        <div class="loader" aria-hidden="true">
+          <span class="loader-orb loader-player"></span>
+          <span class="loader-orb loader-enemy"></span>
+        </div>
+
+        <h2 class="loading-title" tabindex="-1" data-focus>Memuat arena</h2>
+
+        <div class="loading-bar" id="loading-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Memuat arena">
+          <span class="loading-fill" id="loading-fill"></span>
+        </div>
+
+        <p class="loading-step" id="loading-step" aria-live="polite">Menyiapkan arena</p>
+      </div>
+    </section>
+
+    <!-- ===== Layar Game ===== -->
+    <section class="screen screen-game" id="game-screen" data-screen="game" hidden>
+      <div class="hud">
+        <div class="hud-side hud-player">
+          <span class="hud-name" id="hud-player-name">Kamu</span>
+          <div class="hp-bar">
+            <div class="hp-fill hp-fill-player" id="hud-player-fill"></div>
+            <span class="hp-text" id="hud-player-hp">100</span>
+          </div>
+        </div>
+
+        <div class="hud-center">
+          <span class="hud-timer" id="hud-timer">1:30</span>
+          <button class="icon-btn" type="button" id="btn-pause">
+            <svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10"/><rect x="7" y="1" width="3" height="10"/></svg>
+            Jeda
+          </button>
+        </div>
+
+        <div class="hud-side hud-enemy">
+          <span class="hud-name" id="hud-enemy-name">Bot</span>
+          <div class="hp-bar">
+            <div class="hp-fill hp-fill-enemy" id="hud-enemy-fill"></div>
+            <span class="hp-text" id="hud-enemy-hp">100</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arena-wrap">
+        <canvas class="arena-canvas" id="game-canvas" width="640" height="640" aria-label="Arena pertandingan"></canvas>
+
+        <div class="pause-overlay" id="pause-overlay" hidden>
+          <h2 class="pause-title">Dijeda</h2>
+          <button class="btn btn-primary" type="button" id="btn-resume">Lanjutkan</button>
+          <button class="btn btn-secondary" type="button" id="btn-quit">Keluar ke Menu</button>
+        </div>
+      </div>
+
+      <div class="hud-footer" id="game-footer">
+        <span class="chip chip-skill" data-skill-meter><span id="hud-player-orb">Laser</span> <span data-skill-text>Siap</span></span>
+        <span class="chip chip-lock" data-lock-state>Lock Aim [E]: OFF</span>
+        <p class="controls-hint">WASD / Panah: gerak &middot; Mouse: bidik &middot; Klik / Spasi: tembak &middot; E: Lock Aim &middot; Esc: jeda</p>
+      </div>
+
+      <div class="touch-controls" id="touch-controls" hidden>
+        <div class="joystick" id="joystick" aria-label="Joystick gerak">
+          <div class="joystick-knob"></div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="action-btn action-lock" type="button" data-touch="lock" data-lock-state><span>Lock</span></button>
+          <button class="action-btn action-attack" type="button" data-touch="attack" data-skill-meter><span>Attack</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Hasil Pertandingan ===== -->
+    <section class="screen screen-result" data-screen="result" hidden>
+      <canvas class="confetti" id="result-confetti" aria-hidden="true"></canvas>
+
+      <div class="result-card" id="result-card">
+        <p class="eyebrow reveal" id="result-reason"></p>
+        <h2 class="result-title" id="result-title" tabindex="-1" data-focus>Menang</h2>
+
+        <div class="stars reveal" id="result-stars" role="img" aria-label="Penilaian">
+          <span class="star" aria-hidden="true"></span>
+          <span class="star" aria-hidden="true"></span>
+          <span class="star" aria-hidden="true"></span>
+        </div>
+
+        <div class="versus reveal" aria-label="Bola pertandingan">
+          <div class="versus-side">
+            <canvas class="orb-preview" id="result-orb-player" data-kind="laser" data-team="player" aria-hidden="true"></canvas>
+            <span class="versus-name" id="result-orb-player-name"></span>
+            <span class="versus-tag versus-tag-player">Kamu</span>
+          </div>
+          <span class="versus-vs" aria-hidden="true">VS</span>
+          <div class="versus-side">
+            <canvas class="orb-preview" id="result-orb-enemy" data-kind="laser" data-team="enemy" aria-hidden="true"></canvas>
+            <span class="versus-name" id="result-orb-enemy-name"></span>
+            <span class="versus-tag versus-tag-enemy">Lawan</span>
+          </div>
+        </div>
+
+        <dl class="result-grid">
+          <div class="stat reveal">
+            <dd class="stat-value" id="res-duration">0:00</dd>
+            <dt class="stat-label">Durasi</dt>
+            <span class="stat-meter"><span class="stat-meter-fill" id="meter-duration"></span></span>
+          </div>
+          <div class="stat reveal">
+            <dd class="stat-value" id="res-hp">0</dd>
+            <dt class="stat-label">Sisa HP</dt>
+            <span class="stat-meter"><span class="stat-meter-fill" id="meter-hp"></span></span>
+          </div>
+          <div class="stat reveal">
+            <dd class="stat-value" id="res-damage">0</dd>
+            <dt class="stat-label">Damage</dt>
+            <span class="stat-meter"><span class="stat-meter-fill" id="meter-damage"></span></span>
+          </div>
+          <div class="stat reveal">
+            <dd class="stat-value" id="res-accuracy">0%</dd>
+            <dt class="stat-label">Akurasi</dt>
+            <span class="stat-meter"><span class="stat-meter-fill" id="meter-accuracy"></span></span>
+          </div>
+        </dl>
+
+        <p class="hint reveal" id="result-total"></p>
+
+        <div class="button-row reveal" id="result-actions">
+          <button class="btn btn-primary btn-pulse" type="button" data-action="rematch">Rematch</button>
+          <button class="btn btn-secondary" type="button" data-goto="menu">Main Menu</button>
+        </div>
+
+        <div class="button-row reveal" id="result-campaign-actions" hidden>
+          <button class="btn btn-primary btn-pulse" type="button" id="camp-continue" data-action="camp-continue">Lanjut</button>
+          <button class="btn btn-secondary" type="button" data-action="camp-retry">Coba Lagi</button>
+          <button class="btn btn-ghost" type="button" data-goto="campaign">Peta Campaign</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Statistik ===== -->
+    <section class="screen" data-screen="stats" id="stats-root" hidden>
+      <header class="screen-head">
+        <button class="btn btn-ghost" type="button" data-goto="menu">&larr; Kembali</button>
+        <h2 class="screen-title" tabindex="-1" data-focus>Statistik</h2>
+      </header>
+
+      <div class="stat-grid">
+        <div class="stat reveal">
+          <span class="stat-value" id="stat-matches">0</span>
+          <span class="stat-label">Pertandingan</span>
+        </div>
+        <div class="stat stat-win reveal">
+          <span class="stat-value" id="stat-wins">0</span>
+          <span class="stat-label">Menang</span>
+        </div>
+        <div class="stat stat-loss reveal">
+          <span class="stat-value" id="stat-losses">0</span>
+          <span class="stat-label">Kalah</span>
+        </div>
+        <div class="stat stat-draw reveal">
+          <span class="stat-value" id="stat-draws">0</span>
+          <span class="stat-label">Seri</span>
+        </div>
+        <div class="stat stat-rate reveal">
+          <span class="stat-value" id="stat-rate">0%</span>
+          <span class="stat-label">Winrate</span>
+          <span class="ring" id="stat-ring" aria-hidden="true"></span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat-value" id="stat-best">0</span>
+          <span class="stat-label">Menang beruntun terbaik</span>
+        </div>
+      </div>
+
+      <div class="history-head reveal">
+        <h3 class="panel-title">Riwayat terakhir</h3>
+        <div class="form-strip" id="form-strip" aria-label="Hasil terakhir, terbaru di kanan"></div>
+      </div>
+
+      <div class="segmented reveal" role="group" aria-label="Filter riwayat">
+        <button class="seg-btn" type="button" data-action="filter-history" data-value="all" aria-pressed="true">Semua</button>
+        <button class="seg-btn" type="button" data-action="filter-history" data-value="win" aria-pressed="false">Menang</button>
+        <button class="seg-btn" type="button" data-action="filter-history" data-value="loss" aria-pressed="false">Kalah</button>
+        <button class="seg-btn" type="button" data-action="filter-history" data-value="draw" aria-pressed="false">Seri</button>
+      </div>
+
+      <div class="table-scroll reveal">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Waktu</th>
+              <th>Hasil</th>
+              <th>Level</th>
+              <th>Bola</th>
+              <th>Durasi</th>
+              <th>Sisa HP</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+        <p class="empty-state" id="history-empty">Belum ada pertandingan. Mainkan satu ronde dulu.</p>
+      </div>
+    </section>
+
+    <!-- ===== Pengaturan ===== -->
+    <section class="screen" data-screen="settings" hidden>
+      <header class="screen-head">
+        <button class="btn btn-ghost" type="button" data-goto="menu">&larr; Kembali</button>
+        <h2 class="screen-title" tabindex="-1" data-focus>Pengaturan</h2>
+      </header>
+
+      <div class="panel">
+        <div class="setting-row">
+          <div class="setting-text">
+            <span class="setting-name" id="sound-label">Suara</span>
+            <span class="hint">Musik latar, efek tembakan, ledakan, dan hasil pertandingan.</span>
+          </div>
+          <button class="switch" type="button" role="switch" id="sound-switch" aria-labelledby="sound-label" aria-checked="true" data-action="toggle-sound"></button>
+        </div>
+
+        <div class="volume-row">
+          <label class="volume-name" for="music-volume">Volume musik</label>
+          <input class="volume-slider" type="range" id="music-volume" data-volume="music" min="0" max="100" step="5" value="100">
+          <output class="volume-value" id="music-volume-value">100%</output>
+        </div>
+
+        <div class="volume-row">
+          <label class="volume-name" for="sfx-volume">Volume efek suara</label>
+          <input class="volume-slider" type="range" id="sfx-volume" data-volume="sfx" min="0" max="100" step="5" value="100">
+          <output class="volume-value" id="sfx-volume-value">100%</output>
+        </div>
+      </div>
+
+      <fieldset class="panel">
+        <legend class="panel-title">Kontrol</legend>
+        <div class="segmented">
+          <button class="seg-btn" type="button" data-action="set-control" data-value="keyboard" aria-pressed="true">Keyboard + Mouse</button>
+          <button class="seg-btn" type="button" data-action="set-control" data-value="touch" aria-pressed="false">Layar Sentuh</button>
+        </div>
+        <p class="hint">Layar Sentuh menampilkan joystick virtual serta tombol Attack, Laser, dan Lock Aim.</p>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend class="panel-title">Kesulitan bot bawaan</legend>
+        <div class="segmented">
+          <button class="seg-btn" type="button" data-action="set-difficulty" data-value="easy" aria-pressed="false">Mudah</button>
+          <button class="seg-btn" type="button" data-action="set-difficulty" data-value="normal" aria-pressed="true">Normal</button>
+          <button class="seg-btn" type="button" data-action="set-difficulty" data-value="hard" aria-pressed="false">Sulit</button>
+        </div>
+      </fieldset>
+
+      <div class="panel danger-zone">
+        <h3 class="panel-title">Ulangi Campaign</h3>
+        <p class="hint">Menghapus progres Campaign akun ini (bola yang terbuka dan bintang). Statistik tidak ikut terhapus.</p>
+        <button class="btn btn-secondary" type="button" id="camp-reset" data-action="camp-reset">Ulangi Campaign dari awal</button>
+      </div>
+
+      <div class="panel danger-zone">
+        <h3 class="panel-title">Reset progres</h3>
+        <p class="hint">Menghapus statistik dan riwayat pertandingan akun ini. Akun tetap ada.</p>
+
+        <button class="btn btn-secondary" type="button" id="reset-ask" data-action="reset-ask">Reset progres</button>
+
+        <div class="confirm-row" id="reset-confirm" hidden>
+          <p>Yakin mau reset semua statistik? Ini tidak bisa dibatalkan.</p>
+          <button class="btn btn-danger" type="button" data-action="reset-confirm">Ya, reset</button>
+          <button class="btn btn-secondary" type="button" data-action="reset-cancel">Batal</button>
+        </div>
+      </div>
+
+      <p class="hint credit-line">
+        Musik: &ldquo;We Are&rdquo; oleh Jo Cohen &amp; Sex Whales (NCS) dan &ldquo;Defiance&rdquo; oleh Tanner Helland (CC BY 4.0). Efek suara: rekaman petir, meriam, senapan, dan benturan dari Freesound, OpenGameArt, Minetest Game, dan Kenney.nl. Rincian di assets/audio/CREDITS.txt.
+      </p>
+
+      <p class="status-line" id="settings-status" role="status" aria-live="polite"></p>
+    </section>
+
+  </div>
+
+  <!-- ===== Intro pembuka (dimainkan oleh js/intro.js) ===== -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro-glow"></div>
+
+    <div class="intro-stage">
+      <canvas class="intro-canvas" id="intro-canvas"></canvas>
+
+      <div class="intro-center">
+        <div class="intro-title">
+          <span class="intro-word intro-word-a">Orbit</span>
+          <span class="intro-word intro-word-b">Arena</span>
+        </div>
+
+        <p class="intro-tagline">Satu arena. Satu pemenang.</p>
+      </div>
+    </div>
+
+    <p class="intro-skip">Ketuk atau tekan tombol apa saja untuk melewati</p>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/bot.js"></script>
+  <script src="js/skins.js"></script>
+  <script src="js/arenas.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/backdrop.js"></script>
+  <script src="js/ornament.js"></script>
+  <script src="js/statistics.js"></script>
+  <script src="js/picker.js"></script>
+  <script src="js/loading.js"></script>
+  <script src="js/defeat.js"></script>
+  <script src="js/victory.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/campaign.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

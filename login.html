@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0d1c">
+  <title>Masuk - Orbit Arena</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/icons/orbit.svg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/ornament.css">
+</head>
+
+<body>
+  <main class="auth-page" data-page="login">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <img src="assets/icons/orbit.svg" alt="">
+        <span class="auth-brand-name">Orbit Arena</span>
+      </div>
+
+      <div>
+        <h1 class="auth-title">Masuk ke arena</h1>
+        <p class="hint">Gunakan akun yang kamu buat di browser ini.</p>
+      </div>
+
+      <p class="notice" id="storage-notice" role="status" hidden>
+        Penyimpanan browser tidak tersedia. Akun hanya bertahan sampai halaman ditutup.
+      </p>
+
+      <form class="auth-form" id="login-form" novalidate>
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+
+        <div class="field">
+          <label class="field-label" for="login-username">Username</label>
+          <input class="input" id="login-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="login-password">Password</label>
+          <div class="input-wrap">
+            <input class="input" id="login-password" name="password" type="password" autocomplete="current-password" required>
+            <button class="input-toggle" type="button" data-toggle-password="login-password">Tampilkan</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit">Masuk</button>
+      </form>
+
+      <p class="auth-footer">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/skins.js"></script>
+  <script src="js/backdrop.js"></script>
+  <script src="js/ornament.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

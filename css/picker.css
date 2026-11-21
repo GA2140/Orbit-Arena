@@ -1,0 +1,356 @@
+/* ==========================================================
+   Orbit Arena - picker.css
+   Layar Pilih Bola: dua kotak (Kamu dan Bot), masing-masing
+   berisi kotak bola biasa dan kotak bola spesial (HP 200).
+   ========================================================== */
+
+.pick-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: min(100%, 980px);
+  margin: 0 auto;
+}
+
+.pick-top {
+  align-self: stretch;
+}
+
+.pick-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pick-title {
+  font-size: 1.75rem;
+  background: linear-gradient(90deg, var(--player-deep), var(--blue), var(--violet), var(--pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.pick-boxes {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+}
+
+.pick-vs {
+  align-self: center;
+  justify-self: center;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gold-deep);
+}
+
+/* ---------- Kotak pemain dan bot ---------- */
+
+.pick-box {
+  --team: var(--player);
+  --team-deep: var(--player-deep);
+  --team-soft: rgba(16, 185, 166, 0.1);
+  --orb: var(--team);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper);
+  box-shadow: 0 6px 0 var(--shadow);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pick-box-enemy {
+  --team: var(--enemy);
+  --team-deep: var(--enemy-deep);
+  --team-soft: rgba(242, 69, 122, 0.1);
+}
+
+.pick-box.is-locked {
+  border-color: var(--team);
+}
+
+.pick-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pick-label {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--team-deep);
+}
+
+.pick-state {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pick-box.is-locked .pick-state {
+  color: var(--team-deep);
+}
+
+.pick-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.pick-group-title span {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* ---------- Kotak bola ---------- */
+
+.pick-cells {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pick-cells-special {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pick-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 2px 8px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    transform 0.15s ease,
+    border-color 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.pick-cell:hover {
+  border-color: var(--orb);
+  transform: translateY(-2px);
+}
+
+.pick-cell .orb-preview {
+  width: 100%;
+  max-width: 92px;
+  height: auto;
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+.pick-cell-name {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+/* Kursor saat Acak Bola: bingkai emas pada bola yang sedang disorot */
+
+.pick-cell.is-hot {
+  border-color: var(--gold);
+  background: rgba(245, 179, 1, 0.16);
+  transform: scale(1.05);
+}
+
+.pick-cell.is-hot .pick-cell-name {
+  color: var(--gold-deep);
+}
+
+.pick-cell.is-picked {
+  border-color: var(--orb);
+  background: var(--paper);
+  box-shadow:
+    0 0 0 3px var(--orb),
+    0 8px 18px rgba(27, 33, 64, 0.16);
+  transform: scale(1.04);
+  animation: pick-pop 0.35s ease-out;
+}
+
+.pick-cell.is-picked .pick-cell-name {
+  color: var(--text);
+}
+
+.pick-cell.is-dim {
+  opacity: 0.55;
+}
+
+.pick-cell.is-dim:hover {
+  opacity: 1;
+}
+
+/* Bola tingkat lain yang tidak boleh dipakai, dan kotak yang hasilnya terkunci */
+
+.pick-cell:disabled {
+  cursor: not-allowed;
+}
+
+.pick-cell.is-blocked {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.pick-cell.is-blocked:hover {
+  border-color: var(--line);
+  transform: none;
+}
+
+.pick-cell.is-picked:disabled {
+  cursor: default;
+}
+
+.pick-box.is-fixed .pick-state::before {
+  content: '\1F512  ';
+}
+
+@keyframes pick-pop {
+  0% {
+    transform: scale(1.22);
+  }
+
+  100% {
+    transform: scale(1.04);
+  }
+}
+
+/* ---------- Kotak spesial ---------- */
+
+.pick-special {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 2px dashed var(--violet);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 61, 154, 0.12), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(122, 69, 240, 0.14), transparent 55%),
+    #fbf9ff;
+}
+
+.pick-group-special {
+  color: var(--violet);
+}
+
+.pick-group-special span {
+  background: var(--violet);
+  color: #ffffff;
+}
+
+.pick-special .pick-cell {
+  background: var(--paper);
+  border-color: rgba(122, 69, 240, 0.25);
+}
+
+/* ---------- Info bola terpilih ---------- */
+
+.pick-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 6.2em;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--team-soft);
+}
+
+.pick-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--text);
+}
+
+.pick-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pick-stats:empty {
+  display: none;
+}
+
+.pick-chip {
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: var(--team);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #06121a;
+}
+
+.pick-chip.is-special {
+  background: var(--violet);
+  color: #ffffff;
+}
+
+.pick-desc {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.pick-box.is-rolling {
+  border-color: var(--gold);
+}
+
+.pick-note {
+  text-align: center;
+}
+
+@media (min-width: 860px) {
+  .pick-boxes {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .pick-box {
+    padding: 10px;
+  }
+
+  .pick-cell-name {
+    font-size: 0.6875rem;
+  }
+
+  .pick-title {
+    font-size: 1.4rem;
+  }
+}

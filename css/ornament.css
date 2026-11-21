@@ -1,0 +1,303 @@
+/* ==========================================================
+   Orbit Arena - ornament.css
+   Hiasan kotak bergaya "sistem planet mini" (lihat js/ornament.js).
+   Semua gerak hanya transform dan opacity.
+   ========================================================== */
+
+html {
+  overflow-x: clip;
+}
+
+/* ---------- Warna bergilir per kotak ---------- */
+
+.has-orn {
+  --orn-1: #10b9a6;
+  --orn-2: #c9f5ee;
+
+  position: relative;
+}
+
+.orn-c1 {
+  --orn-1: #f2457a;
+  --orn-2: #ffd3e1;
+}
+
+.orn-c2 {
+  --orn-1: #ff9a1f;
+  --orn-2: #ffe4bf;
+}
+
+.orn-c3 {
+  --orn-1: #7a45f0;
+  --orn-2: #e0d3ff;
+}
+
+.orn-c4 {
+  --orn-1: #2f8cff;
+  --orn-2: #cfe4ff;
+}
+
+.orn-c5 {
+  --orn-1: #27c47d;
+  --orn-2: #cdf3e1;
+}
+
+.pick-box.has-orn {
+  --orn-1: var(--team);
+  --orn-2: var(--team-soft);
+}
+
+.orn {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---------- Kotak besar: kertas bertumpuk di belakang ---------- */
+
+.orn-full {
+  box-shadow:
+    6px 8px 0 -2px var(--orn-2),
+    12px 16px 0 -4px var(--orn-1);
+  transition:
+    box-shadow 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+    translate 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.orn-full.is-hot {
+  box-shadow:
+    9px 11px 0 -2px var(--orn-2),
+    18px 22px 0 -4px var(--orn-1);
+  translate: -2px -3px;
+}
+
+/* ---------- Planet mini yang mengorbit (kanan atas) ---------- */
+
+.orn-orbit {
+  position: absolute;
+  top: -30px;
+  right: -26px;
+  width: 76px;
+  height: 76px;
+  animation: orn-drop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 0.15s backwards;
+}
+
+.orn-tilt {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-24deg) scaleY(0.46);
+}
+
+.orn-path {
+  position: absolute;
+  inset: 4px;
+  border: 2px dotted var(--orn-1);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.orn-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #ffffff 0, var(--orn-2) 30%, var(--orn-1) 100%);
+  box-shadow: 0 0 0 3px #ffffff;
+  transform: scaleY(2.17);
+}
+
+.orn-spin {
+  position: absolute;
+  inset: 0;
+  animation: orn-spin 9s linear infinite;
+}
+
+.orn-moon {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  margin: -5px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 2px #ffffff;
+  transform: scaleY(2.17);
+}
+
+.orn-moon-small {
+  top: 50%;
+  right: 0;
+  left: auto;
+  width: 7px;
+  height: 7px;
+  margin: -3px -2px 0 0;
+  background: var(--pink);
+}
+
+.orn-full.is-hot .orn-spin {
+  animation-duration: 3s;
+}
+
+@keyframes orn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orn-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.7);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Planet yang mengintip (kiri bawah) ---------- */
+
+.orn-peek {
+  position: absolute;
+  bottom: -22px;
+  left: -20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%, #ffffff 0, var(--orn-2) 26%, var(--orn-1) 100%);
+  box-shadow: 0 0 0 3px #ffffff;
+  animation: orn-drop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 0.3s backwards;
+  transition: transform 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.orn-peek-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 62px;
+  height: 62px;
+  margin: -31px 0 0 -31px;
+  border: 3px solid var(--orn-1);
+  border-radius: 50%;
+  opacity: 0.55;
+  transform: rotate(-24deg) scaleY(0.32);
+}
+
+.orn-full.is-hot .orn-peek {
+  transform: translate(4px, -4px) rotate(-12deg) scale(1.08);
+}
+
+/* ---------- Kotak kecil: tab warna di kiri ---------- */
+
+.orn-tab {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: -1px;
+  width: 5px;
+  border-radius: 0 6px 6px 0;
+  background: var(--orn-1);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.has-orn.is-hot > .orn-lite .orn-tab {
+  transform: scaleX(1.8);
+}
+
+/* ---------- Titik warna saat klik ---------- */
+
+.orn-pop {
+  position: absolute;
+  top: var(--py);
+  left: var(--px);
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--orn-1);
+  animation: orn-pop 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+.orn-pop-1 {
+  background: #f2457a;
+}
+
+.orn-pop-2 {
+  background: #ff9a1f;
+}
+
+.orn-pop-3 {
+  background: #7a45f0;
+}
+
+.orn-pop-4 {
+  background: #2f8cff;
+}
+
+.orn-pop-5 {
+  background: #f5b301;
+}
+
+@keyframes orn-pop {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.3);
+  }
+}
+
+/* ---------- Gerak berkurang ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .orn-spin,
+  .orn-orbit,
+  .orn-peek,
+  .orn-pop {
+    animation: none;
+  }
+
+  .orn-full,
+  .orn-tab,
+  .orn-peek {
+    transition: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .orn-orbit {
+    top: -24px;
+    right: -14px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .orn-peek {
+    bottom: -16px;
+    left: -10px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .orn-peek-ring {
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 -25px;
+  }
+
+  .orn-full {
+    box-shadow:
+      4px 6px 0 -2px var(--orn-2),
+      8px 12px 0 -4px var(--orn-1);
+  }
+}

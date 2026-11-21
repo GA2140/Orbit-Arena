@@ -1,0 +1,1039 @@
+/* ==========================================================
+   Orbit Arena - style.css
+   Token warna, reset, tipografi, dan komponen umum
+   ========================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Palet utama: cadet blue (#5f9ea0) yang digelapkan untuk latar */
+  --cadet: #5f9ea0;
+  --cadet-deep: #2e6b6e;
+
+  --bg: #c5dadc;
+  --paper: #f2f9f9;
+  --surface: #e3eff0;
+  --surface-2: #d3e4e6;
+  --line: #9fc0c3;
+  --text: #10252a;
+  --muted: #3b5a61;
+
+  --player: #10b9a6;
+  --player-light: #c9f5ee;
+  --player-deep: #07685c;
+
+  --enemy: #f2457a;
+  --enemy-light: #ffd3e1;
+  --enemy-deep: #c21f55;
+
+  --gold: #f5b301;
+  --gold-deep: #7a5400;
+  --danger: #e5384f;
+  --danger-deep: #c5223b;
+  --success: #27c47d;
+  --success-deep: #0e6d40;
+
+  --blue: #2f8cff;
+  --violet: #7a45f0;
+  --pink: #ff3d9a;
+  --amber: #ff9a1f;
+  --cyan: #06b6d4;
+  --indigo: #4a56e2;
+
+  --shadow: rgba(16, 37, 42, 0.18);
+
+  --font-display: 'Chakra Petch', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius: 14px;
+  --radius-lg: 22px;
+
+  --gutter-left: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: var(--player-deep);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--player-deep);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* ---------- Teks pendukung ---------- */
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lead {
+  font-size: 1.0625rem;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.hint {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* ---------- Tombol ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    background-color 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  color: #06121a;
+  background: var(--player);
+}
+
+.btn-primary:hover {
+  background: #3fd6c5;
+  color: #06121a;
+}
+
+.btn-secondary {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.btn-danger {
+  color: #1c0309;
+  background: var(--danger);
+}
+
+.btn-danger:hover {
+  background: #ff6b7d;
+}
+
+.btn-ghost {
+  color: var(--muted);
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  background: rgba(27, 33, 64, 0.06);
+}
+
+.btn-sm {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+}
+
+.btn-lg {
+  min-height: 60px;
+  font-size: 1.25rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ---------- Form ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--text);
+}
+
+.input::placeholder {
+  color: #9aa2c8;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.input-wrap .input {
+  padding-right: 92px;
+}
+
+.input-toggle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  min-height: 36px;
+  padding: 0 10px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.input-toggle:hover {
+  color: var(--text);
+}
+
+/* ---------- Notifikasi ---------- */
+
+.notice {
+  padding: 10px 14px;
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  background: rgba(245, 179, 1, 0.08);
+  font-size: 0.875rem;
+  color: var(--gold-deep);
+}
+
+.form-error {
+  padding: 10px 14px;
+  border: 1px solid var(--danger);
+  border-radius: 12px;
+  background: rgba(229, 56, 79, 0.10);
+  font-size: 0.9375rem;
+  color: #c5223b;
+}
+
+/* ---------- Kartu statistik ---------- */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-win .stat-value {
+  color: var(--player-deep);
+}
+
+.stat-loss .stat-value {
+  color: var(--enemy-deep);
+}
+
+.stat-draw .stat-value {
+  color: var(--gold-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+
+/* ---------- Poster bola (latar menu dan login) ---------- */
+
+.poster {
+  position: fixed;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--bg);
+  pointer-events: none;
+}
+
+/* Cincin orbit tipis di belakang bola */
+
+.poster::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-radial-gradient(
+    circle at 55% 50%,
+    transparent 0 90px,
+    rgba(120, 130, 200, 0.28) 90px 92px
+  );
+}
+
+.pose {
+  --depth: 14;
+  --tilt: 0deg;
+  --zoom: 1;
+
+  position: absolute;
+  transform:
+    translate(
+      calc(var(--px, 0) * var(--depth) * -1px),
+      calc(var(--py, 0) * var(--depth) * -1px)
+    )
+    rotate(calc(var(--tilt) + var(--px, 0) * 1.4deg))
+    scale(var(--zoom));
+  transition:
+    transform 0.35s ease-out,
+    opacity 0.25s ease;
+}
+
+.pose-laser,
+.pose-burst {
+  --c: 77, 225, 210;
+}
+
+.pose-bomb,
+.pose-bounce {
+  --c: 255, 122, 89;
+}
+
+.pose-float {
+  position: relative;
+  animation: pose-float 6.4s ease-in-out infinite;
+}
+
+.pose-bomb .pose-float {
+  animation-duration: 7.6s;
+  animation-delay: -2s;
+}
+
+.pose-burst .pose-float {
+  animation-duration: 5.6s;
+  animation-delay: -3.5s;
+}
+
+.pose-bounce .pose-float {
+  animation-duration: 8.4s;
+  animation-delay: -5s;
+}
+
+@keyframes pose-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(1.2deg);
+  }
+}
+
+.pose-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 21% 50%;
+}
+
+.pose-art.is-recoil {
+  animation: pose-recoil 0.45s ease-out;
+}
+
+.pose-art.is-pop {
+  animation: pose-pop 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.pose-art.is-recoil.is-pop {
+  animation:
+    pose-recoil 0.45s ease-out,
+    pose-pop 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+@keyframes pose-recoil {
+  0% {
+    translate: 0 0;
+  }
+
+  22% {
+    translate: -4% 0;
+  }
+
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes pose-pop {
+  0% {
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  35% {
+    scale: 1.16;
+    rotate: -4deg;
+  }
+
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+/* Cincin dan satelit yang menempel di bola */
+
+.pose-orb {
+  position: absolute;
+  top: 50%;
+  left: 21.11%;
+  width: 24.44%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.orb-ring,
+.orb-sat {
+  position: absolute;
+  inset: -28%;
+  border-radius: 50%;
+}
+
+.orb-ring {
+  border: 2px dashed rgba(var(--c), 0.5);
+  animation: orb-spin 22s linear infinite;
+}
+
+.orb-ring-2 {
+  inset: -48%;
+  border: 1px dotted rgba(var(--c), 0.4);
+  animation-duration: 34s;
+  animation-direction: reverse;
+}
+
+.orb-sat {
+  animation: orb-spin 7s linear infinite;
+}
+
+.orb-sat::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgb(var(--c));
+  box-shadow: 0 0 12px 3px rgba(var(--c), 0.7);
+}
+
+.orb-sat-2 {
+  inset: -48%;
+  animation-duration: 11s;
+  animation-direction: reverse;
+}
+
+.orb-sat-2::after {
+  top: -4px;
+  left: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  background: #fff;
+}
+
+@keyframes orb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tembakan otomatis: melesat dari bola menuju arah bidik pose */
+
+.shot {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 340%;
+  height: 12px;
+  margin-top: -6px;
+  pointer-events: none;
+}
+
+.shot::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 14px 4px rgba(var(--c), 0.9);
+}
+
+.shot-burst {
+  animation: shot-fly 0.55s linear forwards;
+}
+
+.shot-burst::after {
+  width: 9px;
+  height: 9px;
+  margin-top: 1.5px;
+}
+
+.shot-laser {
+  height: 8px;
+  margin-top: -4px;
+  background: linear-gradient(90deg, #fff, rgba(var(--c), 0.9) 40%, transparent);
+  box-shadow: 0 0 18px rgba(var(--c), 0.8);
+  transform-origin: 0 50%;
+  animation: shot-laser 0.7s ease-out forwards;
+}
+
+.shot-laser::after {
+  display: none;
+}
+
+.shot-bomb {
+  animation: shot-lob 0.9s ease-in-out forwards;
+}
+
+.shot-bomb::after {
+  width: 20px;
+  height: 20px;
+  margin-top: -4px;
+}
+
+.shot-bounce {
+  animation: shot-zigzag 0.8s ease-in-out forwards;
+}
+
+@keyframes shot-fly {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes shot-laser {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+
+  35% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes shot-lob {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(50%, -380%);
+  }
+
+  92% {
+    opacity: 1;
+    transform: translate(100%, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(100%, 0) scale(2.6);
+  }
+}
+
+@keyframes shot-zigzag {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  35% {
+    transform: translate(45%, 320%);
+  }
+
+  70% {
+    transform: translate(90%, -240%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(130%, 160%);
+  }
+}
+
+/* Lapisan seluruh layar: bara cahaya, cahaya kursor, percikan klik */
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient[hidden] {
+  display: none;
+}
+
+.embers {
+  position: absolute;
+  inset: 0;
+}
+
+.ember {
+  position: absolute;
+  bottom: -20px;
+  left: var(--x);
+  width: calc(var(--size) * 3);
+  height: calc(var(--size) * 3);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 166, 0.95) 0, rgba(16, 185, 166, 0.9) 22%, rgba(16, 185, 166, 0.25) 45%, transparent 70%);
+  opacity: 0;
+  animation: ember-rise var(--dur) linear var(--delay) infinite;
+}
+
+.ember.is-warm {
+  background: radial-gradient(circle, rgba(242, 69, 122, 0.95) 0, rgba(242, 69, 122, 0.9) 22%, rgba(242, 69, 122, 0.25) 45%, transparent 70%);
+}
+
+.ember.is-gold {
+  background: radial-gradient(circle, rgba(245, 179, 1, 0.95) 0, rgba(245, 179, 1, 0.9) 22%, rgba(245, 179, 1, 0.25) 45%, transparent 70%);
+}
+
+@keyframes ember-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+
+  10% {
+    opacity: 0.85;
+  }
+
+  85% {
+    opacity: 0.45;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--drift), -105vh) scale(1);
+  }
+}
+
+.click-burst {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.click-ring {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--player);
+  border-radius: 50%;
+  animation: click-ring 0.55s ease-out forwards;
+}
+
+.click-shard {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  background: var(--player);
+  animation: click-shard 0.6s ease-out forwards;
+}
+
+.click-burst.is-warm .click-ring {
+  border-color: var(--enemy);
+}
+
+.click-burst.is-warm .click-shard {
+  background: var(--enemy);
+}
+
+@keyframes click-ring {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(9);
+  }
+}
+
+@keyframes click-shard {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) rotate(45deg) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(225deg) scale(0.2);
+  }
+}
+
+body.orb-hover {
+  cursor: pointer;
+}
+
+/* Menyorot tombol menu: satu bola membesar, yang lain meredup */
+
+.poster[data-focus] .pose {
+  opacity: 0.4;
+}
+
+.poster[data-focus='laser'] .pose-laser,
+.poster[data-focus='bomb'] .pose-bomb,
+.poster[data-focus='burst'] .pose-burst,
+.poster[data-focus='bounce'] .pose-bounce {
+  --zoom: 1.08;
+
+  opacity: 1;
+}
+
+/* Menu utama: poster di sisi kanan */
+
+.poster.is-lobby {
+  top: 0;
+  right: 0;
+  width: 64vw;
+  height: 100vh;
+}
+
+/* Pinggir poster memudar ke warna latar (tanpa mask supaya animasi tetap ringan) */
+
+.poster.is-lobby::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: linear-gradient(to right, var(--bg) 0, transparent 14%);
+}
+
+.is-lobby .pose-laser {
+  --depth: 22;
+  --tilt: -9deg;
+
+  top: 27%;
+  left: 0;
+  width: 84%;
+  z-index: 3;
+}
+
+.is-lobby .pose-bomb {
+  --depth: 12;
+  --tilt: 7deg;
+
+  top: 0;
+  right: -10%;
+  width: 56%;
+}
+
+.is-lobby .pose-burst {
+  --depth: 30;
+  --tilt: -16deg;
+
+  bottom: -4%;
+  left: 10%;
+  width: 70%;
+  z-index: 2;
+}
+
+.is-lobby .pose-bounce {
+  --depth: 8;
+  --tilt: 3deg;
+
+  top: 2%;
+  left: 2%;
+  width: 52%;
+}
+
+/* Di belakang kotak, poster diam dan tanpa cincin supaya ornamen kotak yang bergerak */
+
+.is-center .pose-float {
+  animation: none;
+}
+
+.is-center .pose-orb {
+  display: none;
+}
+
+/* Login dan register: poster mengitari kartu */
+
+.poster.is-center {
+  inset: 0;
+  opacity: 0.55;
+}
+
+.is-center .pose-laser {
+  top: 6%;
+  left: -14%;
+  width: 62%;
+  --tilt: -8deg;
+}
+
+.is-center .pose-bomb {
+  top: 4%;
+  right: -16%;
+  width: 56%;
+  --tilt: 8deg;
+}
+
+.is-center .pose-burst {
+  bottom: 2%;
+  left: -12%;
+  width: 60%;
+  --tilt: 10deg;
+}
+
+.is-center .pose-bounce {
+  right: -12%;
+  bottom: 4%;
+  width: 56%;
+  --tilt: -6deg;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .poster.is-lobby {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: 100vw;
+    height: 52vh;
+  }
+
+  .poster.is-lobby::after {
+    background: linear-gradient(to bottom, var(--bg) 0, transparent 14%);
+  }
+
+  .is-lobby .pose-laser {
+    top: 24%;
+    left: -4%;
+    width: 100%;
+  }
+
+  .is-lobby .pose-bomb {
+    top: -6%;
+    right: -18%;
+    width: 72%;
+  }
+
+  .is-lobby .pose-burst {
+    bottom: -2%;
+    left: -10%;
+    width: 84%;
+  }
+
+  .is-lobby .pose-bounce {
+    top: 0;
+    left: -8%;
+    width: 66%;
+  }
+
+  .is-center .pose-laser,
+  .is-center .pose-bomb,
+  .is-center .pose-burst,
+  .is-center .pose-bounce {
+    width: 90%;
+  }
+}
+
+/* Hasil menang: bola tim pemain menonjol. Kalah: bola lawan menonjol. */
+
+.poster[data-tone='win'] .pose-bomb,
+.poster[data-tone='win'] .pose-bounce,
+.poster[data-tone='loss'] .pose-laser,
+.poster[data-tone='loss'] .pose-burst {
+  opacity: 0.3;
+}
+
+.credit-line {
+  max-width: 640px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* ---------- Slider volume di Pengaturan ---------- */
+
+.volume-row {
+  display: grid;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 48px;
+  gap: 12px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.volume-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.volume-slider {
+  width: 100%;
+  accent-color: var(--player);
+  cursor: pointer;
+}
+
+.volume-value {
+  font-weight: 800;
+  font-size: 0.88rem;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .volume-row {
+    grid-template-columns: 1fr 44px;
+  }
+
+  .volume-name {
+    grid-column: 1 / -1;
+  }
+}

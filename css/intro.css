@@ -1,0 +1,374 @@
+/* ==========================================================
+   Orbit Arena - intro.css
+   Intro pembuka: logo berkilat, empat bola bertabrakan, lalu
+   judul muncul huruf per huruf (lihat js/intro.js).
+   ========================================================== */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  animation: intro-failsafe 0.01s linear 9s forwards;
+}
+
+/* Jaring pengaman: kalau skrip gagal, lapisan ini tetap menghilang sendiri */
+
+@keyframes intro-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* Vinyet tipis di tepi layar */
+
+.intro::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(122, 130, 220, 0.2) 100%);
+  pointer-events: none;
+}
+
+/* Cahaya latar menyala setelah logo awal */
+
+.intro-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 50% 42% at 38% 46%, rgba(16, 185, 166, 0.2), transparent 70%),
+    radial-gradient(ellipse 48% 40% at 64% 54%, rgba(242, 69, 122, 0.18), transparent 70%),
+    radial-gradient(ellipse 40% 36% at 52% 26%, rgba(245, 179, 1, 0.16), transparent 70%),
+    radial-gradient(ellipse 44% 38% at 48% 78%, rgba(122, 69, 240, 0.14), transparent 70%),
+    radial-gradient(ellipse at 50% 50%, #dcebec 0%, #c5dadc 60%, #a9c8cb 100%);
+  transition: opacity 1.2s ease;
+}
+
+.intro.is-lit .intro-glow {
+  opacity: 1;
+}
+
+.intro-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.intro-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.intro-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 3vh, 28px);
+  padding-inline: 16px;
+}
+
+/* ---------- Judul ---------- */
+
+.intro-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 13vw, 8.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.intro-word {
+  display: block;
+  transform: skewX(-9deg);
+}
+
+.intro-word-a {
+  --face-a: #5eead4;
+  --face-b: var(--player);
+  --face-c: #0a8c7d;
+  --deep: #065e54;
+
+  filter: drop-shadow(0 6px 14px rgba(16, 185, 166, 0.35));
+}
+
+.intro-word-b {
+  --face-a: #ff9ec0;
+  --face-b: var(--enemy);
+  --face-c: #d12a61;
+  --deep: #8f1240;
+
+  margin-left: 0.5em;
+  filter: drop-shadow(0 6px 14px rgba(242, 69, 122, 0.35));
+}
+
+/*
+ * Tiap huruf punya tiga lapis:
+ *   ::before  tebal/ekstrusi berwarna gelap
+ *   teks asli transparan (hanya menjaga ukuran)
+ *   ::after   permukaan bergradasi + kilau yang menyapu
+ */
+
+.intro-title .ch {
+  position: relative;
+  display: inline-block;
+  padding: 0.04em 0.02em;
+  font-style: normal;
+  color: transparent;
+  isolation: isolate;
+  opacity: 0;
+}
+
+.intro-title .ch::before,
+.intro-title .ch::after {
+  content: attr(data-c);
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+}
+
+.intro-title .ch::before {
+  z-index: -1;
+  color: var(--deep);
+  text-shadow:
+    0.02em 0.02em 0 var(--deep),
+    0.04em 0.04em 0 var(--deep),
+    0.06em 0.06em 0 var(--deep),
+    0.08em 0.08em 0 var(--deep),
+    0.1em 0.1em 0 var(--deep),
+    0.12em 0.15em 0.06em rgba(27, 33, 64, 0.3);
+}
+
+.intro-title .ch::after {
+  background:
+    linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.9) 50%, transparent 58%) no-repeat,
+    linear-gradient(180deg, var(--face-a) 0%, var(--face-b) 45%, var(--face-c) 100%);
+  background-size: 260% 100%, 100% 100%;
+  background-position: 100% 0, 0 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.intro.is-title .ch {
+  animation: intro-letter 0.75s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+.intro.is-title .ch::after {
+  animation: intro-shine 3.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 70ms + 1.3s);
+}
+
+@keyframes intro-letter {
+  0% {
+    opacity: 0;
+    transform: translateY(-1.4em) scale(1.9) rotate(-16deg);
+    filter: blur(12px);
+  }
+
+  55% {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  72% {
+    transform: translateY(0.05em) scale(0.94) rotate(1deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes intro-shine {
+  0% {
+    background-position: 100% 0, 0 0;
+  }
+
+  30%,
+  100% {
+    background-position: 0% 0, 0 0;
+  }
+}
+
+/* Tiap huruf punya warna sendiri supaya judul tidak hanya satu warna */
+
+.intro-title .ch:nth-child(5n + 2) {
+  --face-a: #9fd0ff;
+  --face-b: var(--blue);
+  --face-c: #1b63c9;
+  --deep: #0f3c82;
+}
+
+.intro-title .ch:nth-child(5n + 3) {
+  --face-a: #c6a8ff;
+  --face-b: var(--violet);
+  --face-c: #5526c0;
+  --deep: #341580;
+}
+
+.intro-title .ch:nth-child(5n + 4) {
+  --face-a: #ffd98a;
+  --face-b: var(--amber);
+  --face-c: #d97706;
+  --deep: #8f4b05;
+}
+
+.intro-title .ch:nth-child(5n) {
+  --face-a: #ff9ed0;
+  --face-b: var(--pink);
+  --face-c: #cc1f78;
+  --deep: #8a0f50;
+}
+
+/* ---------- Tagline dan petunjuk lewati ---------- */
+
+.intro-tagline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0;
+  font-size: clamp(0.62rem, 2.6vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--violet);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.intro-tagline::before,
+.intro-tagline::after {
+  content: '';
+  width: clamp(24px, 8vw, 64px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+  transform: scaleX(0);
+  transition: transform 0.8s ease 0.2s;
+}
+
+.intro-tagline::after {
+  background: linear-gradient(270deg, transparent, var(--gold));
+}
+
+.intro.is-tagline .intro-tagline {
+  opacity: 1;
+  transform: none;
+}
+
+.intro.is-tagline .intro-tagline::before,
+.intro.is-tagline .intro-tagline::after {
+  transform: scaleX(1);
+}
+
+.intro-skip {
+  position: absolute;
+  right: 0;
+  bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  left: 0;
+  z-index: 1;
+  margin: 0;
+  padding-inline: 16px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: intro-hint 0.6s ease 1s forwards;
+}
+
+@keyframes intro-hint {
+  to {
+    opacity: 0.7;
+  }
+}
+
+/* ---------- Getaran saat bola bertabrakan ---------- */
+
+.intro.is-shake .intro-stage {
+  animation: intro-shake 0.5s ease-out;
+}
+
+@keyframes intro-shake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  15% {
+    transform: translate(-12px, 7px);
+  }
+
+  30% {
+    transform: translate(10px, -8px);
+  }
+
+  45% {
+    transform: translate(-7px, 5px);
+  }
+
+  60% {
+    transform: translate(5px, -3px);
+  }
+
+  80% {
+    transform: translate(-2px, 1px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* ---------- Keluar: judul membesar lalu menyingkap menu ---------- */
+
+.intro.is-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease 0.1s;
+}
+
+.intro.is-out .intro-center {
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(1.2);
+  transition:
+    opacity 0.6s ease,
+    filter 0.8s ease,
+    transform 0.8s ease;
+}
+
+.intro.is-out.is-skip {
+  transition: opacity 0.35s ease;
+}
+
+.intro.is-out.is-skip .intro-center {
+  transition-duration: 0.35s;
+}
+
+/* ---------- Menu menunggu di balik intro ---------- */
+
+.app.is-intro *,
+.app.is-intro *::before,
+.app.is-intro *::after {
+  animation-play-state: paused !important;
+}

@@ -1,0 +1,72 @@
+/* ==========================================================
+   Orbit Arena - auth.css
+   Halaman Login dan Register
+   ========================================================== */
+
+.auth-page {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-block: 32px;
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+  overflow: hidden;
+}
+
+/* Kartu form */
+
+.auth-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: min(100%, 420px);
+  padding: 28px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 24px 60px rgba(27, 33, 64, 0.16);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-brand img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+
+.auth-brand-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.auth-title {
+  font-size: 1.75rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-footer {
+  font-size: 0.9375rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.auth-note {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}

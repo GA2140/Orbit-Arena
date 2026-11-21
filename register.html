@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0d1c">
+  <title>Daftar - Orbit Arena</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/icons/orbit.svg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/ornament.css">
+</head>
+
+<body>
+  <main class="auth-page" data-page="register">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <img src="assets/icons/orbit.svg" alt="">
+        <span class="auth-brand-name">Orbit Arena</span>
+      </div>
+
+      <div>
+        <h1 class="auth-title">Buat akun pemain</h1>
+        <p class="hint">Akun dan progres disimpan di browser ini saja.</p>
+      </div>
+
+      <p class="notice" id="storage-notice" role="status" hidden>
+        Penyimpanan browser tidak tersedia. Akun hanya bertahan sampai halaman ditutup.
+      </p>
+
+      <form class="auth-form" id="register-form" novalidate>
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+
+        <div class="field">
+          <label class="field-label" for="reg-username">Username</label>
+          <input class="input" id="reg-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="16" required>
+          <span class="auth-note">3 sampai 16 karakter: huruf, angka, atau garis bawah.</span>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="reg-password">Password</label>
+          <div class="input-wrap">
+            <input class="input" id="reg-password" name="password" type="password" autocomplete="new-password" required>
+            <button class="input-toggle" type="button" data-toggle-password="reg-password">Tampilkan</button>
+          </div>
+          <span class="auth-note">Minimal 4 karakter.</span>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="reg-confirm">Konfirmasi password</label>
+          <div class="input-wrap">
+            <input class="input" id="reg-confirm" name="confirm" type="password" autocomplete="new-password" required>
+            <button class="input-toggle" type="button" data-toggle-password="reg-confirm">Tampilkan</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit">Daftar</button>
+      </form>
+
+      <p class="auth-note">Menghapus data situs di browser juga menghapus akun dan progresmu.</p>
+
+      <p class="auth-footer">Sudah punya akun? <a href="login.html">Masuk</a></p>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/skins.js"></script>
+  <script src="js/backdrop.js"></script>
+  <script src="js/ornament.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
